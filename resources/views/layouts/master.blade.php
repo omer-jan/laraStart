@@ -70,7 +70,7 @@
 
           <li class="nav-item">
           <router-link to="/dashboard" class="nav-link">
-              <i class="nav-icon fa fa-tachometer-alt"></i>
+              <i class="nav-icon fa fa-tachometer-alt blue"></i>
               <p>
                 Dashboard
 
@@ -80,7 +80,7 @@
 
           <li class="nav-item has-treeview  ">
             <a href="#" class="nav-link  ">
-              <i class="nav-icon fas fa-cogs"></i>
+              <i class="nav-icon fas fa-cogs yellow"></i>
               <p>
                 Management
                 <i class="right fa fa-angle-left"></i>
@@ -93,17 +93,12 @@
                   <p>users</p>
                 </router-link>
               </li>
-              <li class="nav-item">
-                <a href="#" class="nav-link">
-                  <i class="fa fa-circle-o nav-icon"></i>
-                  <p>Inactive Page</p>
-                </a>
-              </li>
+
             </ul>
           </li>
           <li class="nav-item">
             <router-link to="/profile" class="nav-link">
-              <i class="nav-icon fa fa-user"></i>
+              <i class="nav-icon fa fa-user green"></i>
               <p>
                 Profile
 
@@ -130,7 +125,7 @@
 
     <div class="content">
       <div class="container-fluid">
-        <br>
+
       <router-view></router-view>
 
       </div>
