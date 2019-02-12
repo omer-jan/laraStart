@@ -1977,7 +1977,12 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   created: function created() {
+    var _this = this;
+
     this.loadUsers();
+    setInterval(function () {
+      return _this.loadUsers();
+    }, 3000);
   },
   methods: {
     createUser: function createUser() {
@@ -1992,11 +1997,11 @@ __webpack_require__.r(__webpack_exports__);
       this.$Progress.finish();
     },
     loadUsers: function loadUsers() {
-      var _this = this;
+      var _this2 = this;
 
       axios.get("api/user").then(function (_ref) {
         var data = _ref.data;
-        return _this.users = data.data;
+        return _this2.users = data.data;
       });
     }
   }
