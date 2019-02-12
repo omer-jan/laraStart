@@ -30,10 +30,10 @@
 
                 <tr v-for="user in users" :key="user.id">
                   <td>{{user.id}}</td>
-                  <td>{{user.name}}</td>
+                  <td>{{user.name | upText }}</td>
                   <td>{{user.email}}</td>
-                  <td>{{user.type}}</td>
-                    <td>{{user.created_at}}</td>
+                  <td>{{user.type | upText}}</td>
+                    <td>{{user.created_at | mydate}}</td>
 
                   <td>
                     <a href="#">
@@ -152,8 +152,17 @@
     {
       createUser()
       {
-        this.form.post('api/user');
+         this.$Progress.start();
+         this.form.post('api/user');
+          $('#addUserModel').modal('hide');
 
+
+         Toast.fire({
+           type: 'success',
+           title:'User Creatd Successfully',
+           animation: true,
+         })
+         this.$Progress.finish();
       },
       loadUsers()
       {

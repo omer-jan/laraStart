@@ -26,7 +26,11 @@
     "dependencies": {
         "@fortawesome/fontawesome-free": "^5.7.0",
         "admin-lte": "^3.0.0-alpha.2",
+        "moment": "^2.24.0",
+        "sweetalert2": "^8.0.6",
         "vform": "^1.0.0",
+        "vue-filter": "^0.2.5",
+        "vue-progressbar": "^0.7.5",
         "vue-router": "^3.0.2"
     }
 }
