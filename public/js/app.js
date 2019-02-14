@@ -1988,26 +1988,99 @@ __webpack_require__.r(__webpack_exports__);
     });
   },
   methods: {
-    createUser: function createUser() {
-      this.$Progress.start();
-      this.form.post('api/user'); // we create a custom event
+    DeleteUser: function DeleteUser(id) {
+      var _this2 = this;
 
-      Fire.$emit('AfterCreate'); // this line will call an event its name is AfterCreate
+      swal.fire // show confirmation dialog box to the user
+      ({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!'
+      }).then(function (result) {
+        // if the user click ok delete it
+        if (result.value) {
+          _this2.$Progress.start(); // start showing the progess bar
+          // it mean user want to delete the user
 
-      $('#addUserModel').modal('hide');
-      Toast.fire({
-        type: 'success',
-        title: 'User Creatd Successfully',
-        animation: true
+
+          _this2.form.delete('api/user/' + id).then(function () {
+            // if user delete Successfully then show user delete
+            Toast.fire({
+              type: 'success',
+              title: 'User Deleted Successfully',
+              animation: true
+            }); //   swal.fire
+            //   ({
+            //   type:'toast',
+            //    title:'Deleted!',
+            //   text:'User has been deleted.',
+            //   type:'success',
+            //   showConfirmButton: false,
+            //   timer: 1500,
+            //   //showConfirmButton: false,
+            // });
+
+            Fire.$emit('AfterCreate');
+
+            _this2.$Progress.finish();
+          }).catch(function () {
+            // if something wents wrong then inform the user
+            Toast.fire({
+              type: 'error',
+              title: 'something wents wrong',
+              animation: true
+            });
+
+            _this2.$Progress.fail();
+          });
+        } // in here we will sent request to server and we will process it
+
       });
-      this.$Progress.finish();
+    },
+    createUser: function createUser() {
+      var _this3 = this;
+
+      this.$Progress.start(); // add validation using promis
+
+      this.form.post('api/user') // if is Successfully
+      .then(function () {
+        // 1- call the event
+        Fire.$emit('AfterCreate'); // this line will call an event its name is AfterCreate
+        // 2- hide the modal
+
+        $('#addUserModel').modal('hide'); // 3- fire the toast message
+
+        Toast.fire({
+          type: 'success',
+          title: 'User Creatd Successfully',
+          animation: true
+        }); // 4- finish the progress bar
+
+        _this3.$Progress.finish(); //reset the form
+
+
+        _this3.form.reset();
+      }) // if there is something went wrongs
+      .catch(function () {
+        Toast.fire({
+          type: 'error',
+          title: 'something wents wrong',
+          animation: true
+        });
+
+        _this3.$Progress.fail();
+      });
     },
     loadUsers: function loadUsers() {
-      var _this2 = this;
+      var _this4 = this;
 
       axios.get("api/user").then(function (_ref) {
         var data = _ref.data;
-        return _this2.users = data.data;
+        return _this4.users = data.data;
       });
     }
   }
@@ -60990,7 +61063,22 @@ var render = function() {
                           _vm._v(_vm._s(_vm._f("mydate")(user.created_at)))
                         ]),
                         _vm._v(" "),
-                        _vm._m(2, true)
+                        _c("td", [
+                          _vm._m(2, true),
+                          _vm._v(" "),
+                          _c(
+                            "a",
+                            {
+                              attrs: { href: "#" },
+                              on: {
+                                click: function($event) {
+                                  _vm.DeleteUser(user.id)
+                                }
+                              }
+                            },
+                            [_c("i", { staticClass: "fa fa-trash red" })]
+                          )
+                        ])
                       ])
                     })
                   ],
@@ -61319,14 +61407,8 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("td", [
-      _c("a", { attrs: { href: "#" } }, [
-        _c("i", { staticClass: "fa fa-edit blue" })
-      ]),
-      _vm._v(" "),
-      _c("a", { attrs: { href: "#" } }, [
-        _c("i", { staticClass: "fa fa-trash red" })
-      ])
+    return _c("a", { attrs: { href: "#" } }, [
+      _c("i", { staticClass: "fa fa-edit blue" })
     ])
   },
   function() {
@@ -75656,9 +75738,6 @@ __webpack_require__.r(__webpack_exports__);
 
 
 vue__WEBPACK_IMPORTED_MODULE_2___default.a.use(vue_router__WEBPACK_IMPORTED_MODULE_0__["default"], vue_filter__WEBPACK_IMPORTED_MODULE_1___default.a);
-vue__WEBPACK_IMPORTED_MODULE_2___default.a.filter('upText', function (text) {
-  return text.charAt(0).toUpperCase() + text.slice(1);
-});
 var router = new vue_router__WEBPACK_IMPORTED_MODULE_0__["default"]({
   mode: 'history',
   routes: [{

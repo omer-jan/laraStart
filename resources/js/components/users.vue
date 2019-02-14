@@ -36,10 +36,10 @@
                     <td>{{user.created_at | mydate}}</td>
 
                   <td>
-                    <a href="#">
+                    <a href="#" >
                       <i class="fa fa-edit blue"></i>
                     </a>
-                    <a href="#">
+                    <a href="#" @click="DeleteUser(user.id)">
                       <i class="fa fa-trash red"></i>
                     </a>
                   </td>
@@ -158,21 +158,101 @@
     },
     methods:
     {
+      DeleteUser(id)
+      {
+        swal.fire // show confirmation dialog box to the user
+        ({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+        }).then((result) =>
+        {
+          // if the user click ok delete it
+              if (result.value)
+              {
+
+                this.$Progress.start(); // start showing the progess bar
+                // it mean user want to delete the user
+                this.form.delete('api/user/'+id)
+                .then(()=>{
+                  // if user delete Successfully then show user delete
+                  Toast.fire({
+                    type: 'success',
+                    title:'User Deleted Successfully',
+                    animation: true,
+                  })
+                //   swal.fire
+                //   ({
+                //   type:'toast',
+                //    title:'Deleted!',
+                //   text:'User has been deleted.',
+                //   type:'success',
+                //   showConfirmButton: false,
+                //   timer: 1500,
+                //   //showConfirmButton: false,
+                // });
+                    Fire.$emit('AfterCreate');
+                    this.$Progress.finish();
+
+                })
+                .catch(()=>{
+                  // if something wents wrong then inform the user
+                  Toast.fire({
+                    type: 'error',
+                    title:'something wents wrong',
+                    animation: true,
+                  });
+                   this.$Progress.fail();
+
+                })
+
+              }
+            // in here we will sent request to server and we will process it
+
+
+
+        })
+      },
       createUser()
       {
          this.$Progress.start();
-         this.form.post('api/user');
-          // we create a custom event
-         Fire.$emit('AfterCreate');// this line will call an event its name is AfterCreate
-          $('#addUserModel').modal('hide');
+         // add validation using promis
+         this.form.post('api/user')
+            // if is Successfully
+             .then(()=>{
+
+               // 1- call the event
+               Fire.$emit('AfterCreate');// this line will call an event its name is AfterCreate
+               // 2- hide the modal
+                $('#addUserModel').modal('hide');
+                // 3- fire the toast message
+               Toast.fire({
+                 type: 'success',
+                 title:'User Creatd Successfully',
+                 animation: true,
+               })
+               // 4- finish the progress bar
+               this.$Progress.finish();
+               //reset the form
+               this.form.reset();﻿
+
+             })
+             // if there is something went wrongs
+             .catch(()=>{
+               Toast.fire({
+                 type: 'error',
+                 title:'something wents wrong',
+                 animation: true,
+               })
+               this.$Progress.fail();
+
+             });
 
 
-         Toast.fire({
-           type: 'success',
-           title:'User Creatd Successfully',
-           animation: true,
-         })
-         this.$Progress.finish();
       },
       loadUsers()
       {
