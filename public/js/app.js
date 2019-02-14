@@ -1979,15 +1979,21 @@ __webpack_require__.r(__webpack_exports__);
   created: function created() {
     var _this = this;
 
-    this.loadUsers();
-    setInterval(function () {
-      return _this.loadUsers();
-    }, 3000);
+    this.loadUsers(); //setInterval(() =>this.loadUsers(),3000); here we send an http request each 3 second but now we will
+    // do it using event
+    // the below line will listen to the AfterCreate event
+
+    Fire.$on('AfterCreate', function () {
+      _this.loadUsers();
+    });
   },
   methods: {
     createUser: function createUser() {
       this.$Progress.start();
-      this.form.post('api/user');
+      this.form.post('api/user'); // we create a custom event
+
+      Fire.$emit('AfterCreate'); // this line will call an event its name is AfterCreate
+
       $('#addUserModel').modal('hide');
       Toast.fire({
         type: 'success',
@@ -75340,6 +75346,11 @@ var Toast = sweetalert2__WEBPACK_IMPORTED_MODULE_3___default.a.mixin({
   timer: 2000
 });
 window.Toast = Toast; ////////////////////////////////
+//////////////////////////////// for using emit we should do the following
+// we use this when we want to use custome event
+
+var Fire = new Vue();
+window.Fire = Fire; ////////////////////////////////
 
 var app = new Vue({
   el: '#app',

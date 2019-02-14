@@ -147,7 +147,13 @@
     created()
     {
       this.loadUsers();
-      setInterval(() =>this.loadUsers(),3000);
+      //setInterval(() =>this.loadUsers(),3000); here we send an http request each 3 second but now we will
+      // do it using event
+      // the below line will listen to the AfterCreate event
+      Fire.$on('AfterCreate',()=>{
+          this.loadUsers();
+      });
+
 
     },
     methods:
@@ -156,6 +162,8 @@
       {
          this.$Progress.start();
          this.form.post('api/user');
+          // we create a custom event
+         Fire.$emit('AfterCreate');// this line will call an event its name is AfterCreate
           $('#addUserModel').modal('hide');
 
 

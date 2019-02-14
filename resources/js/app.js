@@ -52,6 +52,11 @@ const Toast = swal.mixin({
 });
 window.Toast = Toast;
 ////////////////////////////////
+//////////////////////////////// for using emit we should do the following
+// we use this when we want to use custome event
+let Fire= new Vue();
+window.Fire=Fire;
+////////////////////////////////
 const app = new Vue({
     el: '#app',
     router:Router
