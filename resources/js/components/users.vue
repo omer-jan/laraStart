@@ -8,8 +8,8 @@
               <h3 class="card-title">Users List</h3>
 
               <div class="card-tools">
-                <button class="btn btn-success" data-toggle="modal" data-target="#addUserModel">
-                  <i class="fas fa-user-plus fa-fw"></i>
+                <button class="btn btn-success" @click="newModal">
+                  <i class="fas fa-user-plus fa-fw" ></i>
                   Add New
                 </button>
 
@@ -36,7 +36,7 @@
                     <td>{{user.created_at | mydate}}</td>
 
                   <td>
-                    <a href="#" >
+                    <a href="#" @click="EditUser(user)">
                       <i class="fa fa-edit blue"></i>
                     </a>
                     <a href="#" @click="DeleteUser(user.id)">
@@ -57,12 +57,13 @@
       <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Add New User</h5>
+            <h5 v-show="!editmode" class="modal-title" id="exampleModalLabel">Add New User</h5>
+            <h5 v-show="editmode" class="modal-title" id="exampleModalLabel">Update user info</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
-            <form @submit.prevent="createUser">
+            <form @submit.prevent="editmode ? updateUser() :createUser()">
           <div class="modal-body">
             <div class="form-group">
               <input
@@ -119,7 +120,8 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-        <button type="submit" class="btn btn-primary">Create</button>
+        <button v-show="!editmode" type="submit" class="btn btn-primary">Create</button>
+        <button v-show="editmode" type="submit" class="btn btn-success">Update</button>
       </div>
       </form>
     </div>
@@ -132,8 +134,10 @@
   export default{
     data() {
       return {
+        editmode:true,// if it is true it mean we are edting and if it is flase it mean we are add new
         users:{},
         form: new Form({
+          id:'',
           name: '',
           email: '',
           password: '',
@@ -158,6 +162,48 @@
     },
     methods:
     {
+      updateUser()
+      {
+          this.$Progress.start();
+        //api/user/{user}
+      this.form.put('api/user/'+this.form.id)
+      .then(()=>{
+        Toast.fire({
+          type: 'success',
+          title:'User info updated Successfully',
+          animation: true,
+        });
+
+        Fire.$emit('AfterCreate');
+          $('#addUserModel').modal('hide');
+        this.$Progress.finish();
+      })
+      .catch(()=>{
+        Toast.fire({
+          type: 'error',
+          title:'something wents wrong',
+          animation: true,
+        });
+         this.$Progress.fail();
+
+      });
+
+      },
+      EditUser(user)
+      {
+          this.editmode=true;
+          this.form.fill(user);// this will fill the form
+          $('#addUserModel').modal('show');
+
+      },
+      newModal()
+      {
+          // set edit mode to flase becase we want to add new user
+          this.editmode=false;
+        // before showing modal we should reset it
+          this.form.reset();﻿
+          $('#addUserModel').modal('show');
+      },
       DeleteUser(id)
       {
         swal.fire // show confirmation dialog box to the user
@@ -237,8 +283,7 @@
                })
                // 4- finish the progress bar
                this.$Progress.finish();
-               //reset the form
-               this.form.reset();﻿
+
 
              })
              // if there is something went wrongs

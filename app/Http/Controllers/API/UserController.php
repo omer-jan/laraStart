@@ -37,6 +37,15 @@ class UserController extends Controller
     }
     public function update(Request $request, $id)
     {
+      $user=User::findOrFail($id);
+      $this->validate($request,[
+        'name' => 'required|string|max:191',
+        'email' => 'required|string|email|max:191|unique:users,email,'.$user->id,// it mean for update for the current user escape the uniquniss property
+        'password' => 'sometimes|string|min:6', // it mean if you dont enter the password so it is ok
+      ]);
+      //dd($request->all());
+      $user->update($request->all());
+      return ['message'=>"update the user info"];
 
     }
     public function destroy($id)
