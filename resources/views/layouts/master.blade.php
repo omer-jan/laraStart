@@ -4,10 +4,10 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
+
 <meta name="csrf-token" content="{{ csrf_token() }}">
   <title>AdminLTE 3 | Starter</title>
 <link rel="stylesheet" href="{{ asset('css/app.css')}}">
-
 </head>
 <body class="hold-transition sidebar-mini">
 <div class="wrapper" id="app">
@@ -95,6 +95,15 @@
               </li>
 
             </ul>
+          </li>
+          <li class="nav-item">
+            <router-link to="/Developer" class="nav-link">
+              <i class="nav-icon fa fa-cog "></i>
+              <p>
+                Developer
+
+              </p>
+            </router-link>
           </li>
           <li class="nav-item">
             <router-link to="/profile" class="nav-link">

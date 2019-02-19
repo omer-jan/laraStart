@@ -1,12 +1,16 @@
 <?php
 
 namespace App\Providers;
-
+use Laravel\Passport\Passport;
 use Illuminate\Support\ServiceProvider;
 Use Illuminate\Support\Facades\Schema;
 
 class AppServiceProvider extends ServiceProvider
 {
+
+
+
+
     /**
      * Bootstrap any application services.
      *

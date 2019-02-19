@@ -5,6 +5,7 @@ import Vue from 'vue'
 import Profile from './components/profile.vue'
 import Dashboard from './components/dashboard.vue'
 import Users from './components/users.vue'
+import Developer from './components/developer.vue'
 Vue.use(VueRouter,VueFilter);
 
 
@@ -17,6 +18,7 @@ const router = new VueRouter
         {  path:"/profile",component:Profile },
         {  path:"/dashboard",component:Dashboard },
         {  path:"/users",component:Users },
+        {  path:"/Developer",component:Developer },
     ]
 })
 export default router
