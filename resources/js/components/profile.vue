@@ -134,3 +134,35 @@
 
 </div>
 </template>
+
+<script>
+  export default
+  {
+    data() {
+      return {
+        editmode:true,// if it is true it mean we are edting and if it is flase it mean we are add new
+        users:{},
+        form: new Form({
+          id:'',
+          name: '',
+          email: '',
+          password: '',
+          bio: '',
+          photo: '',
+          type: '',
+        })
+
+      }
+    },
+    created()
+    {
+         axios.get("api/profile")
+         .then(({data})=>{ alert("i am back")});
+         axios.get("api/profile").then(({data})=>(this.form.fill(data)));
+    },
+    methods:
+    {
+    }
+
+  }
+  </script>

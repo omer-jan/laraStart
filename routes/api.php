@@ -31,5 +31,5 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 // Route::get('/user', 'API\UserController@index')->middleware('auth:api');
 Route::apiResources([
     'user' => 'API\UserController',
-
-]);
+  ]);
+  Route::get('profile','API\UserController@profile');

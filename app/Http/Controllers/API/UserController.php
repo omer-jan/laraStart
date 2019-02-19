@@ -40,6 +40,16 @@ class UserController extends Controller
     {
 
     }
+    public function profile()
+    {
+      return auth('api')->user();
+      // $user=User::findOrFail(2);
+      // return $user;
+
+      //return auth('api')->user();
+
+    }
+
     public function update(Request $request, $id)
     {
       $user=User::findOrFail($id);
