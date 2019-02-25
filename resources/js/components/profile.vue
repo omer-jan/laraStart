@@ -22,7 +22,7 @@
                 <h5 class="widget-user-desc">{{this.form.type}}</h5>
               </div>
               <div class="widget-user-image">
-                <img class="img-circle" src="" alt="User Avatar">
+                <img class="img-circle" :src="getProfilePhoto()" alt="User Avatar">
               </div>
               <div class="card-footer">
                 <div class="row">
@@ -157,7 +157,8 @@
           bio: '',
           photo: '',
           type: '',
-        })
+        }),
+        profilePhoto:'',
 
       }
     },
@@ -165,12 +166,24 @@
     {
       // axios.get("api/profile")
       // .then(({data})=>{ alert("i am back")});
-      axios.get("api/profile").then(({data})=>(this.form.fill(data)));
+     // axios.get("api/profile").then(({data})=>(this.form.fill(data)));
+      this.loadUserProfileDate();
+      
+       Fire.$on('refershAfterUpdate',()=>{
+          this.loadUserProfileDate();
+      });
     },
     methods:
     {
+      getProfilePhoto(){
+        // this will return directry 
+        // becuase we know all our image is in img/profile
+      //  let userphoto=this.form.photo;
+          return "img/profile/"+this.profilePhoto;
+      },
       updateProfile(e){
-
+ 
+ 
 
         //let file = e.target.files[0];
         let file = e.target.files[0];//get the file
@@ -210,12 +223,23 @@
         this.form.put('api/profile')
         .then(()=>{
 
+           Fire.$emit('refershAfterUpdate');
           this.$Progress.finish();
         })
         .catch(() => {
           this.$Progress.fail();
 
         });
+      },
+      loadUserProfileDate()
+      {
+         //axios.get("api/profile").then(({data})=>(this.form.fill(data)));
+         axios.get("api/profile").then(({data})=>{
+           this.form.fill(data);
+           this.profilePhoto=this.form.photo;
+         });
+        
+
       }
     },
   }

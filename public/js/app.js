@@ -2741,7 +2741,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         bio: '',
         photo: '',
         type: ''
-      })
+      }),
+      profilePhoto: ''
     };
   },
   created: function created() {
@@ -2749,12 +2750,19 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
     // axios.get("api/profile")
     // .then(({data})=>{ alert("i am back")});
-    axios.get("api/profile").then(function (_ref) {
-      var data = _ref.data;
-      return _this.form.fill(data);
+    // axios.get("api/profile").then(({data})=>(this.form.fill(data)));
+    this.loadUserProfileDate();
+    Fire.$on('refershAfterUpdate', function () {
+      _this.loadUserProfileDate();
     });
   },
   methods: {
+    getProfilePhoto: function getProfilePhoto() {
+      // this will return directry 
+      // becuase we know all our image is in img/profile
+      //  let userphoto=this.form.photo;
+      return "img/profile/" + this.profilePhoto;
+    },
     updateProfile: function updateProfile(e) {
       var _this2 = this;
 
@@ -2790,9 +2798,23 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
       this.$Progress.start();
       this.form.put('api/profile').then(function () {
+        Fire.$emit('refershAfterUpdate');
+
         _this3.$Progress.finish();
       }).catch(function () {
         _this3.$Progress.fail();
+      });
+    },
+    loadUserProfileDate: function loadUserProfileDate() {
+      var _this4 = this;
+
+      //axios.get("api/profile").then(({data})=>(this.form.fill(data)));
+      axios.get("api/profile").then(function (_ref) {
+        var data = _ref.data;
+
+        _this4.form.fill(data);
+
+        _this4.profilePhoto = _this4.form.photo;
       });
     }
   }
@@ -63936,17 +63958,22 @@ var render = function() {
                 ]
               ),
               _vm._v(" "),
-              _vm._m(0),
+              _c("div", { staticClass: "widget-user-image" }, [
+                _c("img", {
+                  staticClass: "img-circle",
+                  attrs: { src: _vm.getProfilePhoto(), alt: "User Avatar" }
+                })
+              ]),
               _vm._v(" "),
-              _vm._m(1)
+              _vm._m(0)
             ]),
             _vm._v(" "),
             _c("div", { staticClass: "card" }, [
-              _vm._m(2),
+              _vm._m(1),
               _vm._v(" "),
               _c("div", { staticClass: "card-body" }, [
                 _c("div", { staticClass: "tab-content" }, [
-                  _vm._m(3),
+                  _vm._m(2),
                   _vm._v(" "),
                   _c(
                     "div",
@@ -64229,17 +64256,6 @@ var render = function() {
   ])
 }
 var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "widget-user-image" }, [
-      _c("img", {
-        staticClass: "img-circle",
-        attrs: { src: "", alt: "User Avatar" }
-      })
-    ])
-  },
   function() {
     var _vm = this
     var _h = _vm.$createElement
