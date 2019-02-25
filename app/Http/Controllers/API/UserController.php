@@ -43,10 +43,38 @@ class UserController extends Controller
     public function profile()
     {
       return auth('api')->user();
-      // $user=User::findOrFail(2);
-      // return $user;
 
-      //return auth('api')->user();
+    }
+    public function UpdateProfile(Request $request)
+    {
+       $user=auth('api')->user();
+      $this->validate($request,[
+        'name' => 'required|string|max:191',
+        'email' => 'required|string|email|max:191|unique:users,email,'.$user->id,// it mean for update for the current user escape the uniquniss property
+        'password' => 'sometimes|string|min:6', // it mean if you dont enter the password so it is ok
+      ]);
+     
+      $currentPhoto=$user->photo;
+    if($request->photo != $currentPhoto)
+    {
+      $name = time().'.' . explode('/', explode(':', substr($request->photo, 0, strpos($request->photo, ';')))[1])[1];
+      // the above line will create file name something linke 1550571515.jpeg
+         \Image::make($request->photo)->save(public_path('img/profile/').$name);
+      // the above line will save the image in public/img/profile Directory       
+        $request->merge(['photo'=>$name]);
+        // to delete the old photo so just go to the path and photo name
+        $userPhoto = public_path('img/profile/').$currentPhoto;
+            if(file_exists($userPhoto)){
+              // if photo exit and he or she change there image it should delete the old one
+                @unlink($userPhoto);
+            }
+    }
+   if(!empty($request->password)){
+            $request->merge(['password' => Hash::make($request['password'])]);
+        }
+      $user->update($request->all());
+      return ['message' => "Success"];
+
 
     }
 
