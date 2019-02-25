@@ -3,7 +3,7 @@
     <div class="">
       <div class="row mt-3">
         <div class="col-md-12">
-          <div class="card">
+          <div class="card" v-if="$gate.isAdmin()">
             <div class="card-header">
               <h3 class="card-title">Users List</h3>
 
@@ -302,7 +302,12 @@
       },
       loadUsers()
       {
-       axios.get("api/user").then(({data})=>(this.users=data.data));
+        if(this.$gate.isAdmin())
+        {
+          axios.get("api/user").then(({data})=>(this.users=data.data));
+
+        }
+       
 
       }
 

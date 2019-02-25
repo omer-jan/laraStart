@@ -12,6 +12,11 @@ window.Form=Form;
 Vue.component(HasError.name, HasError)
 Vue.component(AlertError.name, AlertError)
 
+// for gate we import this
+import Gate from "./gate";
+// we should use it in our system 
+Vue.prototype.$gate=new Gate(window.user);
+
 
 // import seet alert2
 import swal from 'sweetalert2'
