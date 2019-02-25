@@ -22,7 +22,7 @@
                 <h5 class="widget-user-desc">{{this.form.type}}</h5>
               </div>
               <div class="widget-user-image">
-                <img class="img-circle" :src="getProfilePhoto()" alt="User Avatar">
+                <img class="img-circle" :src="getProfilePhoto()" alt="User Avatar" style="width:200px;height:200px">
               </div>
               <div class="card-footer">
                 <div class="row">
