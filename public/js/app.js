@@ -3069,8 +3069,9 @@ __webpack_require__.r(__webpack_exports__);
             Fire.$emit('AfterCreate');
 
             _this3.$Progress.finish();
-          }).catch(function () {
-            // if something wents wrong then inform the user
+          }).catch(function (message) {
+            console.log(message); // if something wents wrong then inform the user
+
             Toast.fire({
               type: 'error',
               title: 'something wents wrong',

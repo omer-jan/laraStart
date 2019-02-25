@@ -201,7 +201,7 @@
           // set edit mode to flase becase we want to add new user
           this.editmode=false;
         // before showing modal we should reset it
-          this.form.reset();﻿
+          this.form.reset();
           $('#addUserModel').modal('show');
       },
       DeleteUser(id)
@@ -245,7 +245,8 @@
                     this.$Progress.finish();
 
                 })
-                .catch(()=>{
+                .catch((message)=>{
+                  console.log(message);
                   // if something wents wrong then inform the user
                   Toast.fire({
                     type: 'error',
