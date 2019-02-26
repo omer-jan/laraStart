@@ -6,7 +6,7 @@
                     <div class="card-header">i am dashboard</div>
 
                     <div class="card-body">
-                        I'm an profile
+                      <not-found></not-found>
                     </div>
                 </div>
             </div>

@@ -61,6 +61,7 @@
         </div>
         <div class="info">
           <a href="#" class="d-block">  {{ Auth::user()->name }}</a>
+          <p class="text-sm red">{{ Auth::user()->type }}</p>         
         </div>
       </div>
 

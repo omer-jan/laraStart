@@ -12,11 +12,12 @@ class UserController extends Controller
 
   public function __construct()
   {
-    $this->middleware('api');
+    $this->middleware('auth:api');
   }
     public function index()
     {
-      return user::latest()->paginate(50);
+     $this->authorize('isAdmin');
+      return user::latest()->paginate(5);
 
     }
     public function store(Request $request)
