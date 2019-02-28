@@ -77,7 +77,7 @@ Vue.component(
     require('./components/passport/PersonalAccessTokens.vue').default
 );
 
-Vue.component(
+ Vue.component(
     'not-found',
     require('./components/NotFound404.vue').default
 );
@@ -87,5 +87,18 @@ Vue.component(
 /////////////////////////////////
 const app = new Vue({
     el: '#app',
-    router:Router
+    router:Router,
+    data:
+    {
+        search:'',
+    },
+    methods:
+    {
+        doSearch()
+        {
+            Fire.$emit('searching');
+
+        },
+
+    }
 });

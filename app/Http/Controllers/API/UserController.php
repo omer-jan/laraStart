@@ -101,7 +101,31 @@ class UserController extends Controller
       $user->delete();
       // 3- return message to the user
       return ['message'=>'user Deleted'];
+    }
+    public function search()
+    {
+        if ($search = \Request::get('q')) {
+            $users = User::where(function($query) use ($search){
+                $query->where('name','LIKE',"%$search%")
+                        ->orWhere('email','LIKE',"%$search%");
+            })->paginate(20);
+        }else{
+            $users = User::latest()->paginate(5);
+        }
+        return $users;
 
 
+        
+      
+      // if($search=\Request::get('q'))
+      // {
+      //  // $users=User::where('id',$search)->get();
+      //   $users=User::where(function($query) use ($search){
+      //       $query->where('name','like','%$search%')
+      //             ->orWhere('email','like','%$search%')
+      //             ->orWhere('type','like','%$search%');
+      //   })->paginate(5);
+      // }
+      // return $users;
     }
 }

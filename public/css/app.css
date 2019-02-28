@@ -13138,6 +13138,11 @@ a.text-muted:hover {
   color: #9561e2;
 }
 
+.bg-purple {
+  color: #f8fafc;
+  background-color: #9561e2;
+}
+
 .pink {
   color: #f66D9b;
 }

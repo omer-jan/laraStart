@@ -1,5 +1,31 @@
+   <style>
+
+      .btn-shadow {
+    box-shadow: 0 8px 10px 1px rgba(0, 0, 0, .14), 0 3px 14px 2px rgba(0, 0, 0, .12), 0 5px 5px -3px rgba(0, 0, 0, .2)
+}
+.btn-shadow:active
+{
+   margin-top: 3px;
+    margin-bottom: -3px;
+}
+.page-item .pagination-page-nav
+{
+  color:red;
+
+}
+/* .page-item .pagination-page-nav .active */
+.page-item.active .page-link 
+/* .page-item >.page-link:active */
+{
+    box-shadow: 0 2px 2px 1px rgba(0, 0, 0, .14), 0 3px 2px 2px rgba(0, 0, 0, .12), 0 2px 2px -2px rgba(0, 0, 0, .2);
+   margin-top: 2px !important;
+    margin-bottom: -2px !important;
+    
+}
+    </style>
 <template>
   <div>
+ 
     <div class="">
       <div class="row mt-3">
         <div class="col-md-12">
@@ -8,9 +34,18 @@
               <h3 class="card-title">Users List</h3>
 
               <div class="card-tools">
-                <button class="btn btn-success" @click="newModal">
-                  <i class="fas fa-user-plus fa-fw" ></i>
-                  Add New
+               
+               <!-- refersh the table -->
+              
+               <button class="btn  btn-shadow " style="color:#ffffff;background-color: #6574cd" @click="loadUsers">
+                   <i class="fas fa-sync-alt"></i>           
+                </button>
+                 <!-- <button class="btn  btn-shadow " style="color:#ffffff;background-color:#9561e2" @click="loadUsers">
+                   <i class="fas fa-sync-alt"></i>           
+                </button> -->
+                <!-- add new user -->
+                <button class="btn btn-success btn-shadow" @click="newModal">
+                  <i class="fas fa-user-plus fa-fw" ></i>                  
                 </button>
 
               </div>
@@ -20,7 +55,7 @@
               <table class="table table-hover">
                 <tbody>
                   <tr>
-                    <th>ID</th>
+                    <th >ID</th>
                     <th>Name</th>
                     <th>Email</th>
                     <th>Type</th>
@@ -32,23 +67,31 @@
                   <td>{{user.id}}</td>
                   <td>{{user.name | upText }}</td>
                   <td>{{user.email}}</td>
-                  <td>{{user.type | upText}}</td>
+                  <td >{{user.type | upText}}</td>
                     <td>{{user.created_at | mydate}}</td>
 
                   <td>
-                    <a href="#" @click="EditUser(user)">
-                      <i class="fa fa-edit blue"></i>
-                    </a>
-                    <a href="#" @click="DeleteUser(user.id)">
-                      <i class="fa fa-trash red"></i>
-                    </a>
+                    <button class="btn btn-sm btn-shadow btn-primary" href="#" @click="EditUser(user)">
+                      <i class="fa fa-edit"></i>
+                    </button>
+                      <button class="btn btn-danger btn-sm btn-shadow" @click="DeleteUser(user.id)">
+                      <i class="fa fa-trash  bg-purple"></i>
+                    </button>
+      
+                     
+                       <!-- <button class="btn btn-danger box-shadow--8dp " @click="DeleteUser(user.id)">
+                   <i class="fas fa-trash"></i>           
+                </button> -->
+                  <!-- <a  @click="DeleteUser(user.id)">
+                   <i class="fas fa-trash red  box-shadow--8dp"></i>           
+                </a> -->
                   </td>
                 </tr>
 
               </tbody>
               </table>
             </div>
-            <div class="card-footer">
+            <div class="card-footer  ">
               <pagination :data="users" @pagination-change-page="getResults"></pagination>
             </div>
             <!-- /.card-body -->
@@ -163,6 +206,20 @@
       // the below line will listen to the AfterCreate event
       Fire.$on('AfterCreate',()=>{
           this.loadUsers();
+      });
+       Fire.$on('searching',()=>{
+         let query=this.$parent.search;
+        
+         axios.get('api/findUser?q='+query)
+         .then((data)=>{
+           console.log(data);
+           this.users=data.data;
+
+
+         })
+         .catch(()=>{
+           alert("wow something goes wrong");
+         })
       });
 
 
@@ -315,9 +372,24 @@
       },
       loadUsers()
       {
+         this.$Progress.start();
         if(this.$gate.isAdmin())
         {
-          axios.get("api/user").then(({data})=>(this.users=data));
+          this.$parent.search='';
+          // axios.get("api/user").then(({data})=>(this.users=data));
+          axios.get("api/user").then(({data})=>{
+            this.users=data;
+             this.$Progress.finish();
+          })
+          .catch(()=>{
+               Toast.fire({
+                 type: 'error',
+                 title:'something wents wrong',
+                 animation: true,
+               })
+               this.$Progress.fail();
+
+             });
 
         }
        
