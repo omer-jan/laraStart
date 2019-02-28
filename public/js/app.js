@@ -80316,9 +80316,9 @@ var app = new Vue({
     search: ''
   },
   methods: {
-    doSearch: function doSearch() {
+    doSearch: _.debounce(function () {
       Fire.$emit('searching');
-    }
+    }, 500)
   }
 });
 

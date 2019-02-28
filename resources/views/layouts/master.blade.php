@@ -30,7 +30,7 @@
     <!-- SEARCH FORM -->
     <div class="form-inline ml-3">
       <div class="input-group input-group-sm">
-        <input class="form-control form-control-navbar" type="search" v-model="search" @keyup.enter="doSearch" placeholder="Search" aria-label="Search">
+        <input class="form-control form-control-navbar" type="search" v-model="search" @keyup="doSearch" placeholder="Search" aria-label="Search">
         <div class="input-group-append">
           <button class="btn btn-navbar" @click="doSearch">
             <i class="fa fa-search"></i>
