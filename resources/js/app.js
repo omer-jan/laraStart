@@ -94,6 +94,8 @@ const app = new Vue({
     },
     methods:
     {
+        //wowo it is not working 
+        // this is me 
         
         doSearch: _.debounce(()=>{
              Fire.$emit('searching');
